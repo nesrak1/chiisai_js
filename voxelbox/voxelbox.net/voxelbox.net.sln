@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "voxelbox.net", "voxelbox.net\voxelbox.net.csproj", "{2E4DCDEB-F88D-4C8D-B701-8CD5C6FC3AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "voxelboxclassic.net", "voxelboxclassic.net\voxelboxclassic.net.csproj", "{65E3F547-25FE-40DA-830F-59DECC6D6424}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E4DCDEB-F88D-4C8D-B701-8CD5C6FC3AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E4DCDEB-F88D-4C8D-B701-8CD5C6FC3AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E4DCDEB-F88D-4C8D-B701-8CD5C6FC3AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E4DCDEB-F88D-4C8D-B701-8CD5C6FC3AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65E3F547-25FE-40DA-830F-59DECC6D6424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65E3F547-25FE-40DA-830F-59DECC6D6424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65E3F547-25FE-40DA-830F-59DECC6D6424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65E3F547-25FE-40DA-830F-59DECC6D6424}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A8E5B0E-EADE-4967-9453-613EF60BFC94}
+	EndGlobalSection
+EndGlobal
