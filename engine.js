@@ -2,8 +2,8 @@
 
 //debug
 var stats = new Stats();
-stats.showPanel( 0 );
-document.body.appendChild( stats.dom );
+stats.showPanel(0);
+document.body.appendChild(stats.dom);
 
 //render
 var gl;
@@ -22,20 +22,19 @@ function voxelize() {
         var d = data[idx].split("").map(n => parseInt(n,36));
         var verts = [];
         var indcs = [];
-    	var norms = [];
+        var norms = [];
         var colrs = [];
 
-    	var mats = [];
-    	var i,j,c = 0;
+        var mats = [];
+        var i,j,c = 0;
         var ver;
-    	for (i = 1; i < d[0]*3+1; i += 3) {
-    		mats.push([d[i],d[i+1],d[i+2]]);
-    	}
+        for (i = 1; i < d[0]*3+1; i += 3) {
+            mats.push([d[i],d[i+1],d[i+2]]);
+        }
         var placeSingle = d.indexOf(35);
         if (placeSingle == -1)
             placeSingle = 99999;
-        console.log(placeSingle);
-    	for (i = d[0]*3+1; i < d.length; i += (i < placeSingle) ? 7 : 4) {
+        for (i = d[0]*3+1; i < d.length; i += (i < placeSingle) ? 7 : 4) {
             var x1,y1,z1,x2,y2,z2,mat;
             if (i == placeSingle)
                 i++;
@@ -46,33 +45,33 @@ function voxelize() {
                 x2 = x1;
                 y2 = y1;
                 z2 = z1;
-        		mat = mats[d[i+3]];
+                mat = mats[d[i+3]];
             } else {
                 x2 = d[i+3];
                 y2 = d[i+5];
                 z2 = d[i+4];
-        		mat = mats[d[i+6]];
+                mat = mats[d[i+6]];
             }
-    		ver = createCubeOfDims(0.0+x1/-10+0.4,
-    							   0.0+y1/10-0.4,
-    							   0.0+z1/10-0.4,
-    							   -0.1+x2/-10+0.4,
-    							   0.1+y2/10-0.4,
-    							   0.1+z2/10-0.4);
-    		for (j = 0; j < 72; j++) {
-    			verts[j+(c*72)] = ver[j];
-    		}
-    		norms = norms.concat([
-    			0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0
-    		]);
-    		var colConv = 0.125;
-    		for (j = 0; j < 24; j++) {
-    			colrs = colrs.concat([
-    				mat[0]*colConv,mat[1]*colConv,mat[2]*colConv,1
-    			]);
-    		}
-    		c++;
-    	}
+            ver = createCubeOfDims(0.0+x1/-10+0.4,
+                                   0.0+y1/10-0.4,
+                                   0.0+z1/10-0.4,
+                                   -0.1+x2/-10+0.4,
+                                   0.1+y2/10-0.4,
+                                   0.1+z2/10-0.4);
+            for (j = 0; j < 72; j++) {
+                verts[j+(c*72)] = ver[j];
+            }
+            norms = norms.concat([
+                0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0
+            ]);
+            var colConv = 0.125;
+            for (j = 0; j < 24; j++) {
+                colrs = colrs.concat([
+                    mat[0]*colConv,mat[1]*colConv,mat[2]*colConv,1
+                ]);
+            }
+            c++;
+        }
         indcs = createIndiciesOfCount(verts.length/6);
 
         modelv.push(verts);
@@ -184,7 +183,7 @@ function setup() {
             resourceMeta[key] = gl.getUniformLocation(shaderProgram, key);
     });
 
-	setupLock();
+    setupLock();
 
     voxelize();
 
@@ -201,62 +200,62 @@ function setup() {
 
 //input start
 function setupLock() {
-	var canvas = document.getElementById("c");
-	canvas.requestPointerLock = canvas.requestPointerLock ||
-								canvas.mozRequestPointerLock;
+    var canvas = document.getElementById("c");
+    canvas.requestPointerLock = canvas.requestPointerLock ||
+                                canvas.mozRequestPointerLock;
 
-	document.exitPointerLock = document.exitPointerLock ||
-							   document.mozExitPointerLock;
+    document.exitPointerLock = document.exitPointerLock ||
+                               document.mozExitPointerLock;
 
-	canvas.onclick = function() {
-		canvas.requestPointerLock();
-	};
+    canvas.onclick = function() {
+        canvas.requestPointerLock();
+    };
 
-	document.addEventListener("pointerlockchange", lockChangeAlert, false);
-	document.addEventListener("mozpointerlockchange", lockChangeAlert, false);
+    document.addEventListener("pointerlockchange", lockChangeAlert, false);
+    document.addEventListener("mozpointerlockchange", lockChangeAlert, false);
 
-	document.onkeydown = handleKeyDown;
-	document.onkeyup = handleKeyUp;
+    document.onkeydown = handleKeyDown;
+    document.onkeyup = handleKeyUp;
 
 }
 
 function lockChangeAlert() {
-	var canvas = document.getElementById("c");
-	if (document.pointerLockElement === canvas ||
-		document.mozPointerLockElement === canvas) {
-		document.addEventListener("mousemove", updatePosition, false);
-	} else {
-		document.removeEventListener("mousemove", updatePosition, false);
-	}
+    var canvas = document.getElementById("c");
+    if (document.pointerLockElement === canvas ||
+        document.mozPointerLockElement === canvas) {
+        document.addEventListener("mousemove", updatePosition, false);
+    } else {
+        document.removeEventListener("mousemove", updatePosition, false);
+    }
 }
 
 function updatePosition(e) {
-	cam.b -= e.movementX/100;
-	cam.a -= e.movementY/100;
+    cam.b -= e.movementX/100;
+    cam.a -= e.movementY/100;
 }
 
 var keysDown = {};
 function handleKeyDown(event) {
-	keysDown[event.keyCode] = true;
+    keysDown[event.keyCode] = true;
 }
 
 function handleKeyUp(event) {
-	keysDown[event.keyCode] = false;
+    keysDown[event.keyCode] = false;
 }
 
 function handleKeys() {
     //put key handling here
-	if (keysDown[37] || keysDown[65]) {
+    if (keysDown[37] || keysDown[65]) {
         move(0.01,180);
-	} else if (keysDown[39] || keysDown[68]) {
+    } else if (keysDown[39] || keysDown[68]) {
         move(0.01,0);
-	}
+    }
 
-	if (keysDown[38] || keysDown[87]) {
+    if (keysDown[38] || keysDown[87]) {
         move(0.01,-90);
-	} else if (keysDown[40] || keysDown[83]) {
+    } else if (keysDown[40] || keysDown[83]) {
         move(0.01,90);
-	}
+    }
 
     if (keysDown[32]) {
         cam.y += 0.01;
@@ -280,7 +279,7 @@ function render() {
     gl.depthFunc(gl.LEQUAL);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-	handleKeys();
+    handleKeys();
 
     scene.forEach(function(obj) {
         renderObj(obj);
@@ -354,12 +353,12 @@ function loadShader(type, source) {
 }
 //matrices
 function transform(posX, posY, posZ, rotX, rotY, rotZ) {
-	var a = Math.cos(rotX);
-	var b = Math.sin(rotX);
-	var c = Math.cos(rotY);
-	var d = Math.sin(rotY);
-	var e = Math.cos(rotZ);
-	var f = Math.sin(rotZ);
+    var a = Math.cos(rotX);
+    var b = Math.sin(rotX);
+    var c = Math.cos(rotY);
+    var d = Math.sin(rotY);
+    var e = Math.cos(rotZ);
+    var f = Math.sin(rotZ);
     return [c*e,c*f,-d,0,
            -a*f+b*d*e,a*e+b*d*f,b*c,0,
             a*d*e+b*f,a*d*f-b*e,a*c,0,
@@ -368,7 +367,7 @@ function transform(posX, posY, posZ, rotX, rotY, rotZ) {
 //https://www.3dgep.com/understanding-the-view-matrix/
 //"The function to implement this camera model might look like this:"
 function lookAtFps(eye, pitch, yaw) {
-	var cosPitch = Math.cos(((pitch+90)%180)-90);
+    var cosPitch = Math.cos(((pitch+90)%180)-90);
     var sinPitch = Math.sin(((pitch+90)%180)-90);
     var cosYaw = Math.cos(yaw%360);
     var sinYaw = Math.sin(yaw%360);
@@ -377,12 +376,12 @@ function lookAtFps(eye, pitch, yaw) {
     var yaxis = [sinYaw * sinPitch, cosPitch, cosYaw * sinPitch];
     var zaxis = [sinYaw * cosPitch, -sinPitch, cosPitch * cosYaw];
 
-	return [
-		xaxis[0],yaxis[0],zaxis[0],0,
-		xaxis[1],yaxis[1],zaxis[1],0,
-		xaxis[2],yaxis[2],zaxis[2],0,
-		-dot3(xaxis,eye),-dot3(yaxis,eye),-dot3(zaxis,eye),1
-	];
+    return [
+        xaxis[0],yaxis[0],zaxis[0],0,
+        xaxis[1],yaxis[1],zaxis[1],0,
+        xaxis[2],yaxis[2],zaxis[2],0,
+        -dot3(xaxis,eye),-dot3(yaxis,eye),-dot3(zaxis,eye),1
+    ];
 }
 function dot3(u, v) {
     return u[0]*v[0]+u[1]*v[1]+u[2]*v[2];
